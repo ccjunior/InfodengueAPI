@@ -1,7 +1,7 @@
-﻿using InfodengueAPI.Repositories;
-using InfodengueAPI.Repositories.Impl;
-using InfodengueAPI.Services.Impl;
-using InfodengueAPI.Services;
+﻿using InfodengueAPI.Business.Interfaces.Repositories;
+using InfodengueAPI.Business.Interfaces.Services;
+using InfodengueAPI.Business.Services;
+using InfodengueAPI.Data.Repositories;
 
 namespace InfodengueAPI.Configurations
 {

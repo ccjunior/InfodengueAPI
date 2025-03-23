@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
+    <ProjectReference Include="..\src\InfodengueAPI.Business\InfodengueAPI.Business.csproj" />
+    <ProjectReference Include="..\src\InfodengueAPI.Data\InfodengueAPI.Data.csproj" />
+    <ProjectReference Include="..\src\InfodengueAPI.Domain\InfodengueAPI.Domain.csproj" />
   </ItemGroup>
 
 </Project>

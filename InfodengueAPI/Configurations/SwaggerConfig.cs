@@ -20,10 +20,6 @@ namespace InfodengueAPI.Configurations
                         Email = "carlos.costajunior@hotmail.com"
                     }
                 });
-
-                var xmlFile = "InfoDengueAPI.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
             });
 
             return services;
