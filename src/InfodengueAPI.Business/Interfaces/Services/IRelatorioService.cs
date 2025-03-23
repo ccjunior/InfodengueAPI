@@ -1,14 +1,15 @@
-﻿using InfodengueAPI.Domain.Dtos;
+﻿using InfodengueAPI.Business.Services;
+using InfodengueAPI.Domain.Dtos;
 
 namespace InfodengueAPI.Business.Interfaces.Services
 {
     public interface IRelatorioService
     {
-        Task<RelatorioResponseDto> AdcionarAsync(RelatorioRequestDto request);
-        Task<IEnumerable<RelatorioResponseDto>> ObterTodos();
-        Task<IEnumerable<RelatorioResponseDto>> ObterMunicipioCodigoIBGEAsync(string codigoIBGE);
-        Task<IEnumerable<RelatorioResponseDto>> ObterDadosRioSaoPauloAsync();
-        Task<IEnumerable<object>> ObterTotalCasosRioSaoPauloAsync();
-        Task<IEnumerable<object>> ObterTotalCasosPorArboviroseAsync();
+        Task<ServiceResult<RelatorioResponseDto>> AdcionarAsync(RelatorioRequestDto request);
+        Task<ServiceResultList<RelatorioResponseDto>> ObterTodos();
+        Task<ServiceResultList<RelatorioResponseDto>> ObterMunicipioCodigoIBGEAsync(string codigoIBGE);
+        Task<ServiceResultList<RelatorioResponseDto>> ObterDadosRioSaoPauloAsync();
+        Task<ServiceResultList<object>> ObterTotalCasosRioSaoPauloAsync();
+        Task<ServiceResultList<object>> ObterTotalCasosPorArboviroseAsync();
     }
 }

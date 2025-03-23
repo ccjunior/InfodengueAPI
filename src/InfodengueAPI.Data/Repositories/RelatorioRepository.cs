@@ -22,7 +22,9 @@ namespace InfodengueAPI.Data.Repositories
 
         public async Task<IEnumerable<Relatorio>> ObterTodosAsync()
         {
-            return await _context.Relatorios.ToListAsync();
+            return await _context.Relatorios
+                .Include(r => r.Solicitante)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Relatorio>> ObterMunicipioCodigoIBGEAsync(string codigoIBGE)

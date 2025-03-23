@@ -5,6 +5,7 @@ using InfodengueAPI.Business.Interfaces.Services;
 using InfodengueAPI.Business.Interfaces.Repositories;
 using InfodengueAPI.Domain.Dtos;
 using InfodengueAPI.Business.Converter;
+using System.Collections.Generic;
 
 namespace InfodengueAPI.Business.Services
 {
@@ -28,7 +29,7 @@ namespace InfodengueAPI.Business.Services
             _solicitanteRepository = solicitanteRepository;
         }
 
-        public async Task<RelatorioResponseDto> AdcionarAsync(RelatorioRequestDto request)
+        public async Task<ServiceResult<RelatorioResponseDto>> AdcionarAsync(RelatorioRequestDto request)
         {
             var solicitante = await ObterOuCriarSolicitanteAsync(request);
 
@@ -37,7 +38,7 @@ namespace InfodengueAPI.Business.Services
             if (string.IsNullOrEmpty(nomeMunicipio))
             {
                 _logger.LogWarning("Não foi possível obter o nome do município para o código {CodigoIBGE}", request.CodigoIBGE);
-                return new RelatorioResponseDto();
+                return ServiceResult<RelatorioResponseDto>.ErrorResult($"Não foi possível obter o nome do município para o código {request.CodigoIBGE}");
             }
 
             var relatorioDto = CriarRelatorioDto(request);
@@ -49,39 +50,42 @@ namespace InfodengueAPI.Business.Services
             if (dadosEpidemiologicosJson != null && dadosEpidemiologicosJson.Count > 0)
             {
                 var relatorio = await SalvarRelatorioAsync(request, solicitante.Id, nomeMunicipio, dadosEpidemiologicos);
-                return MapToResponseDTO(relatorio);
+
+                return ServiceResult<RelatorioResponseDto>.SuccessResult(MapToResponseDTO(relatorio));
             }
 
             _logger.LogInformation("Não foi possivel criar o Relatório:{Arbovirose}, Município: {Municipio}", relatorioDto.Arbovirose, nomeMunicipio);
-            return new RelatorioResponseDto();
+            return ServiceResult<RelatorioResponseDto>.ErrorResult($"Não foi possivel criar o Relatório:{relatorioDto.Arbovirose}, Município: {nomeMunicipio}");
         }
 
-        public async Task<IEnumerable<RelatorioResponseDto>> ObterDadosRioSaoPauloAsync()
+        public async Task<ServiceResultList<RelatorioResponseDto>> ObterDadosRioSaoPauloAsync()
         {
             var relatorios = await _relatorioRepository.ObterDadosRioSaoPauloAsync();
-            return MapToResponseDTOList(relatorios.ToList());
+            return ServiceResultList<RelatorioResponseDto>.SuccessResult(MapToResponseDTOList(relatorios.ToList()));
         }
 
-        public async Task<IEnumerable<RelatorioResponseDto>> ObterTodos()
+        public async Task<ServiceResultList<RelatorioResponseDto>> ObterTodos()
         {
             var relatorios = await _relatorioRepository.ObterTodosAsync();
-            return MapToResponseDTOList(relatorios.ToList()); 
+            return ServiceResultList<RelatorioResponseDto>.SuccessResult(MapToResponseDTOList(relatorios.ToList())); 
         }
 
-        public async Task<IEnumerable<RelatorioResponseDto>> ObterMunicipioCodigoIBGEAsync(string codigoIBGE)
+        public async Task<ServiceResultList<RelatorioResponseDto>> ObterMunicipioCodigoIBGEAsync(string codigoIBGE)
         {
             var relatorios = await _relatorioRepository.ObterMunicipioCodigoIBGEAsync(codigoIBGE);
-            return MapToResponseDTOList(relatorios.ToList());
+            return ServiceResultList<RelatorioResponseDto>.SuccessResult(MapToResponseDTOList(relatorios.ToList()));
         }
 
-        public async Task<IEnumerable<object>> ObterTotalCasosRioSaoPauloAsync()
+        public async Task<ServiceResultList<object>> ObterTotalCasosRioSaoPauloAsync()
         {
-            return await _relatorioRepository.ObterTotalCasosRioSaoPauloAsync();
+            var relatorios = await _relatorioRepository.ObterTotalCasosRioSaoPauloAsync();
+            return ServiceResultList<object>.SuccessResult(relatorios.ToList());
         }
 
-        public async Task<IEnumerable<object>> ObterTotalCasosPorArboviroseAsync()
+        public async Task<ServiceResultList<object>> ObterTotalCasosPorArboviroseAsync()
         {
-            return await _relatorioRepository.ObterTotalCasosPorArboviroseAsync();
+            var relatorios = await _relatorioRepository.ObterTotalCasosPorArboviroseAsync();
+            return ServiceResultList<object>.SuccessResult(relatorios.ToList());
         }
 
         #region Private Methods
