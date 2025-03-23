@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\InfodengueAPI.Business\InfodengueAPI.Business.csproj" />
-    <ProjectReference Include="..\src\InfodengueAPI.Data\InfodengueAPI.Data.csproj" />
-    <ProjectReference Include="..\src\InfodengueAPI.Domain\InfodengueAPI.Domain.csproj" />
+    <ProjectReference Include="..\InfodengueAPI.Business\InfodengueAPI.Business.csproj" />
+    <ProjectReference Include="..\InfodengueAPI.Data\InfodengueAPI.Data.csproj" />
+    <ProjectReference Include="..\InfodengueAPI.Domain\InfodengueAPI.Domain.csproj" />
   </ItemGroup>
 
 </Project>
