@@ -5,6 +5,12 @@ VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfodengueAPI", "InfodengueAPI\InfodengueAPI.csproj", "{D3D47FD7-29FF-4F36-9542-269140FEC144}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfodengueAPI.Business", "src\InfodengueAPI.Business\InfodengueAPI.Business.csproj", "{4E8E4106-5618-4868-81C2-5EF3C79C2193}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfodengueAPI.Data", "src\InfodengueAPI.Data\InfodengueAPI.Data.csproj", "{E58AC822-CF98-4107-9567-9AECB33061A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfodengueAPI.Domain", "src\InfodengueAPI.Domain\InfodengueAPI.Domain.csproj", "{D61D0B10-5C42-4CFE-BBD9-9673D5C735BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{D3D47FD7-29FF-4F36-9542-269140FEC144}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3D47FD7-29FF-4F36-9542-269140FEC144}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3D47FD7-29FF-4F36-9542-269140FEC144}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E8E4106-5618-4868-81C2-5EF3C79C2193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E8E4106-5618-4868-81C2-5EF3C79C2193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E8E4106-5618-4868-81C2-5EF3C79C2193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E8E4106-5618-4868-81C2-5EF3C79C2193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58AC822-CF98-4107-9567-9AECB33061A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58AC822-CF98-4107-9567-9AECB33061A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E58AC822-CF98-4107-9567-9AECB33061A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E58AC822-CF98-4107-9567-9AECB33061A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D61D0B10-5C42-4CFE-BBD9-9673D5C735BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D61D0B10-5C42-4CFE-BBD9-9673D5C735BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D61D0B10-5C42-4CFE-BBD9-9673D5C735BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D61D0B10-5C42-4CFE-BBD9-9673D5C735BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

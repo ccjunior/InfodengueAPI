@@ -1,6 +1,5 @@
-﻿using InfodengueAPI.Models;
-using InfodengueAPI.Models.Dtos;
-using InfodengueAPI.Services;
+﻿using InfodengueAPI.Business.Interfaces.Services;
+using InfodengueAPI.Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfodengueAPI.Controllers
@@ -18,9 +17,8 @@ namespace InfodengueAPI.Controllers
             _logger = logger;
         }
 
-        // POST: api/relatorios
         [HttpPost]
-        public async Task<ActionResult<Relatorio>> CreateRelatorio([FromBody] NovoRelatorioRequest request)
+        public async Task<IActionResult> CreateRelatorio([FromBody] RelatorioRequestDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -29,15 +27,9 @@ namespace InfodengueAPI.Controllers
 
             try
             {
-                var relatorio = await _relatorioService.CreateAsync(
-                    request.Nome,
-                    request.CPF,
-                    request.Arbovirose,
-                    request.SemanaInicio,
-                    request.SemanaFim,
-                    request.CodigoIBGE);
+                var relatorio = await _relatorioService.AdcionarAsync(request);
 
-                return CreatedAtAction(nameof(GetRelatorio), new { id = relatorio.Id }, relatorio);
+                return Ok(relatorio);
             }
             catch (Exception ex)
             {
@@ -46,65 +38,34 @@ namespace InfodengueAPI.Controllers
             }
         }
 
-        // GET: api/relatorios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Relatorio>>> GetRelatorios()
+        public async Task<IActionResult> ObtertTodos()
         {
             try
             {
-                var relatorios = await _relatorioService.GetAllAsync();
-                return Ok(relatorios);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar relatórios");
-                return StatusCode(500, "Erro interno do servidor");
-            }
-        }
+                var relatorios = await _relatorioService.ObterTodos();
 
-        // GET: api/relatorios/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Relatorio>> GetRelatorio(int id)
-        {
-            try
-            {
-                var relatorio = await _relatorioService.GetByIdAsync(id);
-                if (relatorio == null)
-                {
+                if (relatorios == null)
                     return NotFound();
-                }
-                return Ok(relatorio);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar relatório com ID {Id}", id);
-                return StatusCode(500, "Erro interno do servidor");
-            }
-        }
 
-        // GET: api/relatorios/municipio/3304557
-        [HttpGet("municipio/{codigoIBGE}")]
-        public async Task<ActionResult<IEnumerable<Relatorio>>> GetRelatoriosPorMunicipio(string codigoIBGE)
-        {
-            try
-            {
-                var relatorios = await _relatorioService.GetByMunicipioCodigoIBGEAsync(codigoIBGE);
                 return Ok(relatorios);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao buscar relatórios para o município {CodigoIBGE}", codigoIBGE);
-                return StatusCode(500, "Erro interno do servidor");
+               return StatusCode(500, "Erro interno ao processar solicitação");
             }
         }
 
-        // GET: api/relatorios/dados-rj-sp
         [HttpGet("dados-rj-sp")]
-        public async Task<ActionResult<IEnumerable<Relatorio>>> GetDadosRioSaoPaulo()
+        public async Task<IActionResult> GetDadosRioSaoPaulo()
         {
             try
             {
-                var relatorios = await _relatorioService.GetDadosRioSaoPauloAsync();
+                var relatorios = await _relatorioService.ObterDadosRioSaoPauloAsync();
+
+                if (relatorios == null)
+                    return NotFound();
+
                 return Ok(relatorios);
             }
             catch (Exception ex)
@@ -114,13 +75,35 @@ namespace InfodengueAPI.Controllers
             }
         }
 
-        // GET: api/relatorios/total-casos-rj-sp
-        [HttpGet("total-casos-rj-sp")]
-        public async Task<ActionResult<IEnumerable<object>>> GetTotalCasosRioSaoPaulo()
+        [HttpGet("municipio/{codigoIBGE}")]
+        public async Task<IActionResult> GetRelatoriosPorMunicipio(string codigoIBGE)
         {
             try
             {
-                var resultado = await _relatorioService.GetTotalCasosRioSaoPauloAsync();
+                var relatorios = await _relatorioService.ObterMunicipioCodigoIBGEAsync(codigoIBGE);
+
+                if (relatorios == null)
+                    return NotFound();
+
+                return Ok(relatorios);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar relatórios para o município {CodigoIBGE}", codigoIBGE);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpGet("total-casos-rj-sp")]
+        public async Task<IActionResult> GetTotalCasosRioSaoPaulo()
+        {
+            try
+            {
+                var resultado = await _relatorioService.ObterTotalCasosRioSaoPauloAsync();
+                
+                if (resultado == null)
+                    return NotFound();  
+
                 return Ok(resultado);
             }
             catch (Exception ex)
@@ -130,39 +113,21 @@ namespace InfodengueAPI.Controllers
             }
         }
 
-        // GET: api/relatorios/total-por-arbovirose
         [HttpGet("total-por-arbovirose")]
-        public async Task<ActionResult<IEnumerable<object>>> GetTotalCasosPorArbovirose()
+        public async Task<IActionResult> GetTotalCasosPorArbovirose()
         {
             try
             {
-                var resultado = await _relatorioService.GetTotalCasosPorArboviroseAsync();
+                var resultado = await _relatorioService.ObterTotalCasosPorArboviroseAsync();
+
+                if (resultado == null)
+                    return NotFound();  
+
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao buscar total de casos por arbovirose");
-                return StatusCode(500, "Erro interno do servidor");
-            }
-        }
-
-        // GET: api/relatorios/filtro?codigoIBGE=3304557&semanaInicio=1&semanaFim=52&arbovirose=dengue
-        [HttpGet("filtro")]
-        public async Task<ActionResult<IEnumerable<Relatorio>>> GetRelatoriosFiltrados(
-            [FromQuery] string codigoIBGE,
-            [FromQuery] int semanaInicio,
-            [FromQuery] int semanaFim,
-            [FromQuery] string arbovirose)
-        {
-            try
-            {
-                var relatorios = await _relatorioService.GetFiltradoAsync(
-                    codigoIBGE, semanaInicio, semanaFim, arbovirose);
-                return Ok(relatorios);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar relatórios filtrados");
                 return StatusCode(500, "Erro interno do servidor");
             }
         }
